@@ -85,10 +85,12 @@ h3 {
 }
 
 .single-item .actions button {
-	width: 60px;
+	size: auto;
+	/* width: 60px; */
 	margin-top: 10px;
-	height: 30px;
+	/* height: 30px; */
 	font-size: 16px;
+	padding: 2px;
 }
 
 .cart-single-item {

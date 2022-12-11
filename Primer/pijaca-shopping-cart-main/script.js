@@ -59,7 +59,7 @@ function addToCart(element) {
                                         <button onclick="Ukloni(this)" class="remove-item">Ukloni</button> 
                                     </div>`;
     
-        document.querySelector('.total').innerHTML = `Vas racun je: ${zbir}$<br> ako nemas.....<br> onda cemo na 3..4..<br> BEŽIIIIII!!<br><button>Ukloni</button>`;
+        document.querySelector('.total').innerHTML = `Vas racun je: ${zbir}$<br> ako nemas.....<br> onda cemo na 3..4..<br> BEŽIIIIII!!`;
 
         element.innerText = 'Dodato' //menjas ime dugmeta u "Dodato"
         
@@ -74,6 +74,8 @@ function Ukloni(element) {
     // trazis najblizeg parenta i iz njega kasnije sakrivas, ovo si vec pisao gore ali ovo je nova funkcije i ona ne prepoznaje da si ti gore vec nest pisao
     let soppingovano = element.closest('.cart-single-item');
     //  console.log(glavniElement);
+    //  console.log(soppingovano);
+
 
     //ovde izdvajas span, pretvaras ga parseInt(cenaKojuOduzimam) u broj i to sto u njemu pise oduzimas od ukupnog zbira kada kliknes na dugme
     let cenaKojuOduzimam = soppingovano.querySelector('p span').innerText;
@@ -82,15 +84,46 @@ function Ukloni(element) {
     zbir -= cenaKojuOduzimam
 
     //ne zaboravi da ubacis opet da ti prikaze to sto si oduzeo
-    document.querySelector('.total').innerHTML = `Vas racun je: ${zbir}$<br> ako nemas.....<br> onda cemo na 3..4..<br> BEŽIIIIII!!<br><button>Ukloni</button>`;
-
+    document.querySelector('.total').innerHTML = `Vas racun je: <span>${zbir}</span>$<br> ako nemas.....<br> onda cemo na 3..4..<br> BEŽIIIIII!!`;
+    let tekst = document.querySelector('.total').innerHTML
 
     // za uklanjanje koristimo .remove()
     soppingovano.remove()
+
+    //ubacio si zbir u span da bi mogao da ga selektujes lakse, ali mislim da ovo moze i nekako drugacije da se odradi ali ja sam se samo ovoga setio
+    let naKraju = document.querySelector('.total span').innerText
+    console.log(naKraju);
+    
+    /*ne znam sto mi ovo ne radi treba da se obrise ceo taj deo gde je total ako je 0
+    //ovde hoces da nrapravis ako je taj zbir na kraju da ne pise ceo tekst nego ili samo "totalni zbir je 0" ili jos bolje nista da ne pise
+    if (naKraju < 1) {
+        tekst.remove()
+        
+    }
+    */
+
+    // kada stisnes da uklonis dugme da prepoznas sta si ukloni, tj koju namirnicu    
+    let namirnicaUkloni = soppingovano.querySelector('h3').innerText;
+    console.log(namirnicaUkloni)
+
+    //treba nam i lista svog povrca koje je dostupno sa leve strane da bi znali da namestimo da se oduzima ono koje je jednako "namirnicaUkloni", koristimo querySelectorAll da ih sve izvucemo a da ih posebno prikazemo koristimo  sveNamirnice.forEach(function (sve) {....})..
+    //ovo (sve) sto pise u funkciji mozes bilo kako da nazoves ali je najblje da bude skracenica elementa od koga vadis pojedinace delove
+    let sveNamirnice = document.querySelectorAll('.single-item')
+    // console.log(sveNamirnice);
+
+    sveNamirnice.forEach(function (sve) {
+        // console.log(sve);
+        let namirnicaPocetak = sve.querySelector('.si-content h3').innerText
+        if (namirnicaPocetak === namirnicaUkloni) {
+            sve.querySelector('.actions input').value = 0;
+            sve.querySelector('.actions button').removeAttribute('disabled');
+            sve.querySelector('.actions button').innerText= 'PA DODO SAM';
+        }
+
+    });
+
 }
 
 /* 
-dugme da uklonis ZBIR ukupan
-omoguci da se restartuje dugme za unos pojedinacnih proizvoda
-retartuj brojeve da budu 0
+dugme za uklanjanje potpunog zbira
 */
